@@ -1,28 +1,26 @@
 $(document).ready(function() {
   console.log("DOM Content loaded.")
-  var degrees = "C";
+  var celsius = "C";
+  var farenheit = "F";
   var curTempScale = $("#temp-scale").text();
+  var oppositeTempScale = $("#opposite-temp-scale").text();
 
-  // $(".pushme").click(function () {
-  //     $(this).text(function(i, text){
-  //         return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
-  //     })
-  //  });
-  $("button").click(function(){
-    $("#temp-scale").text(function(i, text){
-        return text === "PUSH ME" ? "DON'T PUSH ME" : "PUSH ME";
-    })
-    // if(curTempScale === "F") {
-    //   curTempScale = "C";
-    //   $("#temp-scale").text("C");
-    // }
-    //
-    // if(curTempScale === "C") {
-    //   curTempScale = "F";
-    //   $("#temp-scale").text("F");
-    // }
-    // $("#temp-scale").text(curTempScale === degrees ? "F" : "C");
-  });
+  //at every click toggle between celsius and farenheit
+  $("button").on("click",function() {
+    //if toggle button is C, need to change to F and be applied (i.e. 73 C becomes 73 F)
+    if(curTempScale === celsius) {
+      curTempScale = farenheit;
+      $("#temp-scale").text(curTempScale);
+      oppositeTempScale = celsius;
+      $("#opposite-temp-scale").text(oppositeTempScale);
+    }
 
+    else if(curTempScale === farenheit) {
+      curTempScale = celsius;
+      $("#temp-scale").text(curTempScale);
+      oppositeTempScale = farenheit;
+      $("#opposite-temp-scale").text(oppositeTempScale);
+    }
+});
 
 });
