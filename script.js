@@ -23,4 +23,26 @@ $(document).ready(function() {
     }
 });
 
+/* === USE OF WEATHER API BELOW === */
+$.ajax({
+  url: 'https://fcc-weather-api.glitch.me/api/current?lon=:longitude&lat=:latitude',
+  type: 'GET',
+  dataType: 'json',
+  // data: {lon:':longitude', lat:':latitude' }.
+})
+.done(function() {
+  console.log("success");
+  // if the user allows access to their location, get their current position which includes longitude and latitude
+  if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    $("#location").text("lat: " + position.coords.latitude + " long: " + position.coords.longitude);
+  });
+}
+})
+.fail(function() {
+  console.log("error");
+})
+.always(function() {
+  console.log("complete");
+});
 });
