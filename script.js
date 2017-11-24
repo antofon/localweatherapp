@@ -4,6 +4,8 @@ $(document).ready(function() {
   var farenheit = "F";
   var curTempScale = $("#temp-scale").text();
   var oppositeTempScale = $("#opposite-temp-scale").text();
+  var lat = 0;
+  var long = 0;
 
   //at every click toggle between celsius and farenheit
   $("button").on("click",function() {
@@ -34,10 +36,26 @@ $.ajax({
   console.log("success");
   // if the user allows access to their location, get their current position which includes longitude and latitude
   if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    $("#location").text("lat: " + position.coords.latitude + " long: " + position.coords.longitude);
-  });
-}
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+
+
+      // var geocoding = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + '%2C' + position.coords.longitude + '&language=en';
+      //
+      // $.getJSON(geocoding).done(function(results) {
+      //     alert(results[1]);
+      // });
+
+      $("#location").text("lat: " + position.coords.latitude + " long: " + position.coords.longitude);
+    });
+  }
+
+  // $.getJSON('https://fcc-weather-api.glitch.me/api/current?lon=:longitude&lat=:latitude', {param1: 'value1'}, function(json) {
+  //   $(".message").html(JSON.stringify(json));
+  //     /*optional stuff to do after success */
+  // });
 })
 .fail(function() {
   console.log("error");
