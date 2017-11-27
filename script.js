@@ -32,7 +32,7 @@ $.ajax({
   dataType: 'json',
   // data: {lon:':longitude', lat:':latitude' }.
 })
-.done(function() {
+.done(function(json) {
   console.log("success");
   // if the user allows access to their location, get their current position which includes longitude and latitude
   if (navigator.geolocation) {
@@ -48,7 +48,11 @@ $.ajax({
       //     alert(results[1]);
       // });
 
-      $("#location").text("lat: " + position.coords.latitude + " long: " + position.coords.longitude);
+        opencageAPI = 'https://api.opencagedata.com/geocode/v1/json?q=' + lat + '+' + long + '&pretty=1&key=80f8fa6078764e978111699fa6732fa4';
+        // return opencageAPI;
+        $.getJSON(opencageAPI, {format:'json'}, function(json) {
+          $("#location").text(json.results[0].components.city + ", " + json.results[0].components.state);
+        });
     });
   }
 
@@ -63,4 +67,24 @@ $.ajax({
 .always(function() {
   console.log("complete");
 });
+var opencageAPI = ''
+
+function makeUrl() {
+  opencageAPI = 'https://api.opencagedata.com/geocode/v1/json?q=' + lat + '+' + long + '&pretty=1&key=80f8fa6078764e978111699fa6732fa4';
+  // return opencageAPI;
+}
+
+// makeUrl();
+
+// var opencageAPI = 'https://api.opencagedata.com/geocode/v1/json?q=34.690085599999996+-118.18311569999999&pretty=1&key=80f8fa6078764e978111699fa6732fa4';
+// $.getJSON(opencageAPI, {format:'json'}, function(json) {
+//   console.log(lat);
+//   console.log(long);
+//   console.log(opencageAPI);
+//   console.log(json.results[5].components.city + ", " + json.results[5].components.state);
+//   // $(".message").html(JSON.stringify(json));
+//     /*optional stuff to do after success */
+//     // lat: 34.690085599999996 long: -118.18311569999999
+// });
+
 });
