@@ -2,7 +2,7 @@ $(document).ready(function() {
   console.log("DOM Content loaded.")
   var celsius = "C";
   var farenheit = "F";
-  var curTempScale = $("#temp-scale").text();
+  var curTempScale = $("#button-temp-scale").text();
   var oppositeTempScale = $("#opposite-temp-scale").text();
   var opencageURL = '';
   var weatherURL = '';
@@ -16,14 +16,14 @@ $(document).ready(function() {
     //if toggle button is C, need to change to F and be applied (i.e. 73 C becomes 73 F)
     if(curTempScale === celsius) {
       curTempScale = farenheit;
-      $("#temp-scale").text(curTempScale);
+      $("#button-temp-scale").text(curTempScale);
       oppositeTempScale = celsius;
       $("#opposite-temp-scale").text(oppositeTempScale);
     }
 
     else if(curTempScale === farenheit) {
       curTempScale = celsius;
-      $("#temp-scale").text(curTempScale);
+      $("#button-temp-scale").text(curTempScale);
       oppositeTempScale = farenheit;
       $("#opposite-temp-scale").text(oppositeTempScale);
     }
@@ -55,19 +55,52 @@ $(document).ready(function() {
 
         weatherURL = 'https://fcc-weather-api.glitch.me/api/current?lon=' + long + '&' + 'lat=' + lat;
         $.getJSON(weatherURL, {format:'json'}, function(json) {
-          convertToFarenheit = (json.main.temp* 9/5) + 32;
 
-          $('#create-temp-image').attr('src', json.weather[0].icon);
-          $('#create-temp-image').attr('width', '75');
-          $('#create-temp-image').attr('height', '75');
+          //have two Celsius and Farenheit equivalent temps
+          convertToCelsius = json.main.temp;
+          convertToFarenheit = (json.main.temp * (9/5)) + 32;
 
+          //start out providing temperature in Farenheit to be toggled to Celsius
+          //if temp for example. 50.6 > 50.5, round value up to nearest whole int
           if(convertToFarenheit >= convertToFarenheit + 0.5) {
             $('#temp-value').text(Math.ceil(convertToFarenheit));
           }
 
+          //else round down to nearest whole int
           else {
             $('#temp-value').text(Math.floor(convertToFarenheit));
           }
+
+          //will allow Celsius to Farenheit temp scale and value change. Vice versa
+          $("button").on("click",function() {
+            // If currently Celsius use Farenheit equivalent of Celsius
+            if(curTempScale === celsius) {
+              if(convertToFarenheit >= convertToFarenheit + 0.5) {
+                $('#temp-value').text(Math.ceil(convertToFarenheit));
+              }
+
+              else {
+                $('#temp-value').text(Math.floor(convertToFarenheit));
+              }
+            }
+
+            // If currently Farenheit use Celsius equivalent of Farenheit
+            else {
+              if(convertToCelsius >= convertToCelsius + 0.5) {
+                $('#temp-value').text(Math.floor(convertToCelsius));
+              }
+
+              else {
+                $('#temp-value').text(Math.ceil(convertToCelsius));
+              }
+            }
+          });
+
+          // Access image attributes to applied src for image elt, width, and height
+          $('#create-temp-image').attr('src', json.weather[0].icon);
+          $('#create-temp-image').attr('width', '75');
+          $('#create-temp-image').attr('height', '75');
+          // Provide description from JSON parsing
           $('#temp-description').text(json.weather[0].description);
         });
       });
