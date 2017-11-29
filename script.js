@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  console.log("DOM Content loaded.")
+  "use strict";
+  console.log("DOM Content loaded.");
+
   var celsius = "C";
   var farenheit = "F";
   var curTempScale = $("#button-temp-scale").text();
