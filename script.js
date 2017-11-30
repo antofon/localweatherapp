@@ -48,11 +48,18 @@ $(document).ready(function() {
         long = position.coords.longitude;
 
         //build URL, the parameter passed to get the JSON data: https://api.opencagedata.com/geocode/v1/json?q=LAT+LONG&pretty=1&key=<YOURAPIKEY>
-        opencageURL = 'https://api.opencagedata.com/geocode/v1/json?q=' + lat + '+' + long + '&pretty=1&key=80f8fa6078764e978111699fa6732fa4';
+        opencageURL = 'https://api.opencagedata.com/geocode/v1/json?q=' + -34.594883 + '+' + -58.45756 + '&pretty=1&key=80f8fa6078764e978111699fa6732fa4';
         $.getJSON(opencageURL, {format:'json'}, function(json) {
           //results array is returned upon getJSON function call. Subsequent properties shown when traverse in results array
           console.log(json.results[0]);
-          $("#location").text(json.results[0].components.city + ", " + json.results[0].components.state);
+          if(json.results[0].components.city === undefined) {
+            $("#location").text(json.results[0].components.state + ", " + json.results[0].components.country);
+          }
+
+          else {
+            $("#location").text(json.results[0].components.city + ", " + json.results[0].components.state);
+          }
+
         });
 
         weatherURL = 'https://fcc-weather-api.glitch.me/api/current?lon=' + long + '&' + 'lat=' + lat;
