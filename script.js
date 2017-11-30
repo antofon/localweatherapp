@@ -52,6 +52,7 @@ $(document).ready(function() {
         $.getJSON(opencageURL, {format:'json'}, function(json) {
           //results array is returned upon getJSON function call. Subsequent properties shown when traverse in results array
           console.log(json.results[0]);
+          //if json parse does not bring back a city, meaning the user's location is not in the U.S. or another location. Use the state, country rather than city, state
           if(json.results[0].components.city === undefined) {
             $("#location").text(json.results[0].components.state + ", " + json.results[0].components.country);
           }
